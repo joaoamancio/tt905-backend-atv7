@@ -21,35 +21,37 @@ function (req, res){
     res.send("Hello de Novo");
     }
 )
-const mensagens = [
-    "Elziele da Rocha", "Lucas Canova dos Santos", 0 
+myBooks = [ 
+    {title: "Cristianismo Puro e Simples", author: "Clive Staples Lewis", originalYearOfPublication: 1952},
+    {title: "Não Tenho Fé Suficiente Para Ser Ateu", author: "Norman L. Geisler and Frank Turek", originalYearOfPublication: 2004},
+    {title: "Ciência e religião: Fundamentos para o diálogo", author: "Alister McGrath", originalYearOfPublication: 1999},
+    {title: "A evolução e a queda: Implicações da ciência moderna para a teologia cristã", author:"James K. A. Smith and William T. Cavanaugh", originalYearOfPublication: 2017}
 ];
 
-app.get('/mensagens',
+app.get('/myBooks',
     function(req, res){
-        // res.send(mensagens);
-        res.send(mensagens.filter(Boolean));
+        res.send(myBooks.filter(Boolean));
     }
 );
 
 app.get('/mensagens/:id',
     function(req, res){
         const id = req.params.id - 1;
-        const mensagem = mensagens[id];
+        myBooks = mensagens[id];
 
-        if (!mensagem){
+        if (!myBooks){
             res.send("Mensagem não encontrada");
         } else {
-            res.send(mensagem);
+            res.send(myBooks);
         }
     }
 )
 
 app.post('/mensagens', 
     (req, res) => {
-        console.log(req.body.mensagem);
-        const mensagem = req.body.mensagem;
-        mensagens.push(mensagem);
+        console.log(req.body.myBooks);
+        myBooks = req.body.myBooks;
+        mensagens.push(myBooks);
         res.send("criar uma mensagem.")
     }
 );
@@ -57,8 +59,8 @@ app.post('/mensagens',
 app.put('/mensagens/:id',
     (req, res) => {
         const id = req.params.id - 1;
-        const mensagem = req.body.mensagem;
-        mensagens[id] = mensagem;        
+        myBooks = req.body.myBooks;
+        mensagens[id] = myBooks;        
         res.send("Mensagem atualizada com sucesso.")
     }
 )
