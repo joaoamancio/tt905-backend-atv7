@@ -21,23 +21,24 @@ function (req, res){
     res.send("Hello de Novo");
     }
 )
-myBooks = [ 
+const myBooks = [ 
     {title: "Cristianismo Puro e Simples", author: "Clive Staples Lewis", originalYearOfPublication: 1952},
     {title: "Não Tenho Fé Suficiente Para Ser Ateu", author: "Norman L. Geisler and Frank Turek", originalYearOfPublication: 2004},
     {title: "Ciência e religião: Fundamentos para o diálogo", author: "Alister McGrath", originalYearOfPublication: 1999},
     {title: "A evolução e a queda: Implicações da ciência moderna para a teologia cristã", author:"James K. A. Smith and William T. Cavanaugh", originalYearOfPublication: 2017}
 ];
 
-app.get('/myBooks',
+app.get('/mensagens',
     function(req, res){
-        res.send(myBooks.filter(Boolean));
+        // res.send(mensagens);
+        res.send(mensagens.filter(Boolean));
     }
 );
 
 app.get('/mensagens/:id',
     function(req, res){
         const id = req.params.id - 1;
-        myBooks = mensagens[id];
+        const myBooks = mensagens[id];
 
         if (!myBooks){
             res.send("Mensagem não encontrada");
@@ -50,7 +51,7 @@ app.get('/mensagens/:id',
 app.post('/mensagens', 
     (req, res) => {
         console.log(req.body.myBooks);
-        myBooks = req.body.myBooks;
+        const myBooks = req.body.myBooks;
         mensagens.push(myBooks);
         res.send("criar uma mensagem.")
     }
@@ -59,7 +60,7 @@ app.post('/mensagens',
 app.put('/mensagens/:id',
     (req, res) => {
         const id = req.params.id - 1;
-        myBooks = req.body.myBooks;
+        const myBooks = req.body.myBooks;
         mensagens[id] = myBooks;        
         res.send("Mensagem atualizada com sucesso.")
     }
