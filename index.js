@@ -1,76 +1,85 @@
-//
 const express = require("express");
 const app = express();
 app.use(express.json());
 
-// Permissões
+//Permissões
 var cors = require('cors');
+const bodyParser = require("body-parser");
 app.use(cors());
 
-// Porta que eu estou ouvindo
+//Porta
 app.listen(process.env.PORT || 3000);
 
-app.get('/', 
-    function (req, res){    
-        res.send("Hello World");
+// Introdução
+app.get('/',
+    (req,res) => {
+        res.send("Atividade 7 - Backend - Marcos Roberto")
     }
 );
-
-app.get('/hello',
-function (req, res){    
-    res.send("Hello de Novo");
-    }
-)
-const myBooks = [ 
+myBooks = [ 
     {title: "Cristianismo Puro e Simples", author: "Clive Staples Lewis", originalYearOfPublication: 1952},
     {title: "Não Tenho Fé Suficiente Para Ser Ateu", author: "Norman L. Geisler and Frank Turek", originalYearOfPublication: 2004},
     {title: "Ciência e religião: Fundamentos para o diálogo", author: "Alister McGrath", originalYearOfPublication: 1999},
     {title: "A evolução e a queda: Implicações da ciência moderna para a teologia cristã", author:"James K. A. Smith and William T. Cavanaugh", originalYearOfPublication: 2017}
 ];
-
-app.get('/mensagens',
-    function(req, res){
-        // res.send(mensagens);
-        res.send(mensagens.filter(Boolean));
-    }
+//Usando Get para obter o Array de Objects myBooks Completo
+app.get('/books',
+    (req,res) => {
+        res.send(myBooks);
+    }    
 );
-
-app.get('/mensagens/:id',
-    function(req, res){
+//Usando Get para obter as informações contidas no myBooks[id] com título, autor e publicação do livro
+app.get('/books/:id',
+    (req,res) => {
         const id = req.params.id - 1;
-        const myBooks = mensagens[id];
-
-        if (!myBooks){
-            res.send("Mensagem não encontrada");
+        const book = myBooks[id];
+        if(!book){
+            res.send("Livro não encontrado.");
         } else {
-            res.send(myBooks);
+            res.send(myBooks[id]);
         }
     }
-)
-
-app.post('/mensagens', 
+);
+//Inserindo um livro com Post
+app.post('/books',
     (req, res) => {
-        console.log(req.body.myBooks);
-        const myBooks = req.body.myBooks;
-        mensagens.push(myBooks);
-        res.send("criar uma mensagem.")
+        console.log(req.body);
+        myLivro = req.body;
+        myBooks.push(myLivro);
+        res.send("Livro inserido com sucesso.");
     }
 );
-
-app.put('/mensagens/:id',
+//Alterando um livro com Put
+app.put('/books/:id',
     (req, res) => {
         const id = req.params.id - 1;
-        const myBooks = req.body.myBooks;
-        mensagens[id] = myBooks;        
-        res.send("Mensagem atualizada com sucesso.")
+        myLivro = req.body;
+        myBooks[id] = myLivro;
+        res.send("Livro atualizado com sucesso.");
     }
-)
-
-app.delete('/mensagens/:id', 
+);
+//Alterando um título específico com Put
+app.put('/books/title/:id',
     (req, res) => {
         const id = req.params.id - 1;
-        delete mensagens[id];
-
-        res.send("Mensagem removida com sucesso");
+        title = req.body.title;
+        myBooks[id].title = title;
+        res.send("Título alterado com sucesso.");
+    }
+);
+//Deletando um livro com Delete
+app.delete('/books/:id',
+    (req,res) => {
+        const id = req.params.id - 1;
+        delete myBooks[id];
+        res.send("Livro deletado com sucesso.");
+    }
+);
+//Deletando um título específico com Delete
+app.delete('/books/title/:id',
+    (req,res) => {
+        const id = req.params.id - 1;
+        delete myBooks[id].title;
+        res.send("Título deletado com sucesso");
     }
 );
