@@ -13,7 +13,7 @@ app.listen(process.env.PORT || 3000);
 // Introdução
 app.get('/',
     (req,res) => {
-        res.send("Atividade 7 - Backend - Marcos Roberto")
+        res.send("Atividade 7 - Backend - joão Victor Amâncio")
     }
 );
 myBooks = [ 
