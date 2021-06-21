@@ -83,3 +83,103 @@ app.delete('/books/title/:id',
         res.send("Título deletado com sucesso");
     }
 );
+/*
+jeadC7ibjecNsFKr
+
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://admin:<password>@cluster0.estq0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+});
+*/
+
+// Utilizando MongoDB
+
+const mongodb = require('mongodb')
+const password = process.env.PASSWORD|| "Senha não enviada";
+console.log(password);
+
+const connectionString = `mongodb+srv://admin:${password}@cluster0.estq0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+
+const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
+
+(async()=>{
+    const client = await mongodb.MongoClient.connect(connectionString, options);
+    const db = client.db('myFirstDatabase');
+    const books = db.collection('books');
+    console.log(await books.find({}).toArray());
+
+
+    app.get('/database',
+    async function(req, res){
+    res.send(await books.find({}).toArray());}
+    );
+
+    app.get('/database/:id',
+        async function(req, res){
+            const id = req.params.id;
+            const books = await books.findOne(
+                {_id: mongodb.ObjectID(id)}
+            );
+            console.log(books);
+            if(!books){
+                res.send("books não encontrado");
+            } else {
+                res.send(books);
+            }
+        }
+    );
+
+    app.post('/database',
+        async (req, res) => {
+            console.log(req.body);
+            const books = req.body;
+
+            delete books["_id"];
+
+            books.insertOne(books);
+            res.send("Livro criado");
+        }
+    );
+
+    app.put('/database/:id',
+        async (req, res) =>{
+            const id = req.params.id;
+            const books = req.body;
+
+            console.log(books);
+
+            delete books["_id"];
+
+            const num_books = await books.countDocuments({_id : mongodb.ObjectID(id)});
+            
+            if (num_books !== 1) {
+                res.send("Ocorreu um erro por conta do número de livros");
+                return;
+            }
+
+            await books.updateOne({_id : mongodb.ObjectID(id)},
+            {$set : books}
+            );
+
+            res.send("Livro atualizado com sucesso.")
+        }
+    );
+
+    app.delete('/database/:id',
+        async (req, res) => {
+            const id = req.params.id;
+
+            await books.deleteOne({_id : mongodb.ObjectID(id)});
+
+            res.send("Livro removido com sucesso");
+        }
+    );
+    
+})();
