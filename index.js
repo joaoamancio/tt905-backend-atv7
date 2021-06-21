@@ -112,14 +112,14 @@ const options = {
     app.get('/database/:id',
         async function(req, res){
             const id = req.params.id;
-            const books = await books.findOne(
+            const book = await books.findOne(
                 {_id: mongodb.ObjectID(id)}
             );
-            console.log(books);
-            if(!books){
+            console.log(book);
+            if(!book){
                 res.send("books não encontrado");
             } else {
-                res.send(books);
+                res.send(book);
             }
         }
     );
@@ -127,11 +127,11 @@ const options = {
     app.post('/database',
         async (req, res) => {
             console.log(req.body);
-            const books = req.body;
+            const book = req.body;
 
-            delete books["_id"];
+            delete book["_id"];
 
-            books.insertOne(books);
+            books.insertOne(book);
             res.send("Livro criado");
         }
     );
@@ -139,11 +139,11 @@ const options = {
     app.put('/database/:id',
         async (req, res) =>{
             const id = req.params.id;
-            const books = req.body;
+            const book = req.body;
 
-            console.log(books);
+            console.log(book);
 
-            delete books["_id"];
+            delete book["_id"];
 
             const num_books = await books.countDocuments({_id : mongodb.ObjectID(id)});
             
@@ -153,7 +153,7 @@ const options = {
             }
 
             await books.updateOne({_id : mongodb.ObjectID(id)},
-            {$set : books}
+            {$set : book}
             );
 
             res.send("Livro atualizado com sucesso.")
