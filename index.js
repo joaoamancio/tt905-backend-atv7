@@ -23,13 +23,13 @@ myBooks = [
     {title: "A evolução e a queda: Implicações da ciência moderna para a teologia cristã", author:"James K. A. Smith and William T. Cavanaugh", originalYearOfPublication: 2017}
 ];
 //Usando Get para obter o Array de Objects myBooks Completo
-app.get('/books',
+app.get('/database',
     (req,res) => {
         res.send(myBooks);
     }    
 );
 //Usando Get para obter as informações contidas no myBooks[id] com título, autor e publicação do livro
-app.get('/books/:id',
+app.get('/database/:id',
     (req,res) => {
         const id = req.params.id - 1;
         const book = myBooks[id];
@@ -41,7 +41,7 @@ app.get('/books/:id',
     }
 );
 //Inserindo um livro com Posthe
-app.post('/books',
+app.post('/database',
     (req, res) => {
         console.log(req.body);
         myLivro = req.body;
@@ -50,7 +50,7 @@ app.post('/books',
     }
 );
 //Alterando um livro com Put
-app.put('/books/:id',
+app.put('/database/:id',
     (req, res) => {
         const id = req.params.id - 1;
         myLivro = req.body;
@@ -59,7 +59,7 @@ app.put('/books/:id',
     }
 );
 //Alterando um título específico com Put
-app.put('/books/title/:id',
+app.put('/database/title/:id',
     (req, res) => {
         const id = req.params.id - 1;
         title = req.body.title;
@@ -68,7 +68,7 @@ app.put('/books/title/:id',
     }
 );
 //Deletando um livro com Delete
-app.delete('/books/:id',
+app.delete('/database/:id',
     (req,res) => {
         const id = req.params.id - 1;
         delete myBooks[id];
@@ -76,7 +76,7 @@ app.delete('/books/:id',
     }
 );
 //Deletando um título específico com Delete
-app.delete('/books/title/:id',
+app.delete('/database/title/:id',
     (req,res) => {
         const id = req.params.id - 1;
         delete myBooks[id].title;
