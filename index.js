@@ -102,7 +102,7 @@ const mongodb = require('mongodb')
 const password = process.env.PASSWORD|| "Senha não enviada";
 console.log(password);
 
-const connectionString = `mongodb+srv://admin:${password}@cluster0.estq0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const connectionString = `mongodb+srv://admin:${password}@cluster0.kwcyz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 const options = {
     useNewUrlParser: true,
